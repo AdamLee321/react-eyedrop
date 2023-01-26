@@ -6,6 +6,8 @@ const extractColors_1 = require("./extractColors");
 const calcAverageColor_1 = require("./calcAverageColor");
 const getColor = (targetCanvas, e, pickRadius) => {
     const { offsetX, offsetY } = e;
+    console.log('offsetX', offsetX);
+    console.log('offsetY', offsetY);
     if (pickRadius === undefined || pickRadius === 0) {
         return getCanvasPixelColor(targetCanvas, offsetX, offsetY);
     }
