@@ -16,14 +16,14 @@ export const validateCanvasExtractionValues = (extractionValues: ExtractionValue
     targetWidth,
     canvasHeight,
     canvasWidth
-  } = extractionValues;
+  } = extractionValues
 
-  const newExtractionValues = { ...extractionValues };
+  const newExtractionValues = { ...extractionValues }
 
-  if (x < 0) { newExtractionValues.x = 0; }
-  if (y < 0) { newExtractionValues.y = 0; }
-  if (x + targetWidth > canvasWidth) { newExtractionValues.targetWidth = canvasWidth - x; }
-  if (y + targetHeight > canvasHeight) { newExtractionValues.targetHeight = canvasHeight - y; }
+  if (x < 0) { newExtractionValues.x = 0 }
+  if (y < 0) { newExtractionValues.y = 0 }
+  if (x + targetWidth > canvasWidth) { newExtractionValues.targetWidth = canvasWidth - x }
+  if (y + targetHeight > canvasHeight) { newExtractionValues.targetHeight = canvasHeight - y }
 
-  return newExtractionValues;
-};
+  return newExtractionValues
+}

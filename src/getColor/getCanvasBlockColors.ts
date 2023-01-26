@@ -1,6 +1,6 @@
-import { ELEMENT_NOT_CANVAS_ERROR } from '../constants/errors';
-import { RgbObj } from '../types';
-import { validateCanvasExtractionValues } from '../validations/validateCanvasExtractionValues';
+import { ELEMENT_NOT_CANVAS_ERROR } from '../constants/errors'
+import { RgbObj } from '../types'
+import { validateCanvasExtractionValues } from '../validations/validateCanvasExtractionValues'
 
 export const getCanvasBlockColors = (
   canvas: HTMLCanvasElement,
@@ -10,9 +10,9 @@ export const getCanvasBlockColors = (
   height: number
 ): Array<RgbObj> => {
   if(!canvas.getContext) {
-    throw ELEMENT_NOT_CANVAS_ERROR;
+    throw ELEMENT_NOT_CANVAS_ERROR
   }
-  const ctx = canvas.getContext('2d')!;
+  const ctx = canvas.getContext('2d')!
 
   const validatedExtractionValues = validateCanvasExtractionValues({
     x,
@@ -21,19 +21,19 @@ export const getCanvasBlockColors = (
     targetWidth: width,
     canvasHeight: canvas.height,
     canvasWidth: canvas.width
-  });
+  })
 
   const imageData = ctx.getImageData(
     validatedExtractionValues.x,
     validatedExtractionValues.y,
     validatedExtractionValues.targetWidth,
     validatedExtractionValues.targetHeight
-  ).data;
+  ).data
 
-  const colorBlock = [];
+  const colorBlock = []
   for (let i = 0; i < imageData.length; i += 4) {
-    const color = imageData.slice(i, i + 4);
+    const color = imageData.slice(i, i + 4)
     colorBlock.push([color[0], color[1], color[2]])
   }
-  return colorBlock;
-};
+  return colorBlock
+}

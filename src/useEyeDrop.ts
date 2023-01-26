@@ -1,14 +1,14 @@
-import * as React from 'react';
-import { HookOptions, RgbObj } from './types';
-import { parseRGB } from './colorUtils/parseRgb';
-import { rgbToHex } from './colorUtils/rgbToHex';
+import * as React from 'react'
+import { HookOptions, RgbObj } from './types'
+import { parseRGB } from './colorUtils/parseRgb'
+import { rgbToHex } from './colorUtils/rgbToHex'
 import { targetToCanvas } from './targetToCanvas'
 import { getColor } from './getColor'
 import { useCallback } from 'react'
 
-const { useEffect, useState } = React;
+const { useEffect, useState } = React
 
-const initialStateColors = { rgb: '', hex: '' };
+const initialStateColors = { rgb: '', hex: '' }
 
 type ReturnValue = [ typeof initialStateColors, () => void, () => void ]
 
@@ -23,34 +23,34 @@ export const useEyeDrop = ({
   onPickCancel,
   onChange,
 }: HookOptions = {}): ReturnValue => {
-  const [colors, setColors] = useState(initialStateColors);
-  const [pickingColorFromDocument, setPickingColorFromDocument] = useState(false);
+  const [colors, setColors] = useState(initialStateColors)
+  const [pickingColorFromDocument, setPickingColorFromDocument] = useState(false)
 
   const pickColor = () => {
     if (onPickStart) { onPickStart() }
 
-    setPickingColorFromDocument(true);
-  };
+    setPickingColorFromDocument(true)
+  }
 
   const cancelPickColor = () => {
     if (onPickCancel) { onPickCancel() }
 
-    setPickingColorFromDocument(false);
-  };
+    setPickingColorFromDocument(false)
+  }
 
   const exitPickByEscKey = useCallback((event: KeyboardEvent) => {
     event.code === 'Escape' && pickingColorFromDocument && cancelPickColor()
   }, [ pickingColorFromDocument, cancelPickColor ])
 
   const updateColors = (rgbObj: RgbObj) => {
-    const rgb = parseRGB(rgbObj);
-    const hex = rgbToHex(rgbObj);
+    const rgb = parseRGB(rgbObj)
+    const hex = rgbToHex(rgbObj)
 
-    setColors({ rgb, hex });
-  };
+    setColors({ rgb, hex })
+  }
 
   const extractColor = useCallback(async (e: MouseEvent) => {
-    const { target } = e;
+    const { target } = e
 
     if(!target) return
     const targetCanvas = await targetToCanvas(target)
@@ -65,34 +65,34 @@ export const useEyeDrop = ({
     }
 
     updateColors(rgbColor)
-    once && setPickingColorFromDocument(false);
+    once && setPickingColorFromDocument(false)
     if (onPickEnd) { onPickEnd() }
-  }, [ customProps, once, setPickingColorFromDocument ]);
+  }, [ customProps, once, setPickingColorFromDocument ])
 
   useEffect(() => {
     if (pickingColorFromDocument) {
-      document.addEventListener('click', extractColor);
+      document.addEventListener('click', extractColor)
     }
     return () => {
-      document.removeEventListener('click', extractColor);
-    };
-  }, [pickingColorFromDocument, once, extractColor]);
+      document.removeEventListener('click', extractColor)
+    }
+  }, [pickingColorFromDocument, once, extractColor])
 
   // setup listener for the esc key
   useEffect(() => {
     if (pickingColorFromDocument) {
-      document.addEventListener('keydown', exitPickByEscKey);
+      document.addEventListener('keydown', exitPickByEscKey)
     }
     return () => {
-      document.removeEventListener('keydown', exitPickByEscKey);
-    };
-  }, [pickingColorFromDocument, exitPickByEscKey]);
+      document.removeEventListener('keydown', exitPickByEscKey)
+    }
+  }, [pickingColorFromDocument, exitPickByEscKey])
 
   useEffect(() => {
     if(document.body && (cursorActive && cursorInactive)) {
       document.body.style.cursor = pickingColorFromDocument ? cursorActive : cursorInactive
     }
-  }, [pickingColorFromDocument, cursorActive, cursorInactive]);
+  }, [pickingColorFromDocument, cursorActive, cursorInactive])
 
-  return [ colors, pickColor, cancelPickColor ];
-};
+  return [ colors, pickColor, cancelPickColor ]
+}
